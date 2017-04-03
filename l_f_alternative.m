@@ -5,16 +5,17 @@ tfinal=40;
 %
 i=1;
 vf(i)=0;
+wf(i)=0;
 t(i)=0;
 %f=0.55;
-wl(i)=1;%-sin(1.1*t(i));
+wl(i)=-sin(1.1*t(i));
 %wl(i)=6;
-xl(i)=5;
-yl(i)=2;
-thtl(i)=pi/2;
-xf(i)=3;
-yf(i)=1.5;
-thtf(i)=pi/6;
+xl(i)=0;
+yl(i)=-5;
+thtl(i)=0;%pi/2;
+xf(i)=-3;
+yf(i)=-8;
+thtf(i)=0;%pi/6;
 phi=-pi/3;
 d=1.2;
 %
@@ -43,9 +44,10 @@ while t(i)<tfinal
         etan(i)=atan2(yl(i)-(yf(i)+0.2*sin(thtf(i))),xl(i)-(xf(i)+0.2*cos(thtf(i))));
         alphan(i)=etan(i)-thtl(i);
         btan(i)=etan(i)-thtf(i);
-        vf(i)=-(d-l(i))*cos(btan(i))+(phi-alphan(i))*l(i)*sin(btan(i))-l(i)*wl(i)+cos(alphan(i)-btan(i));%cos(btan(i))-l(i)*sin(btan(i))*wl(i)-vl*cos(alphan(i)+btan(i));
+        Ko=1/(-phi+alphan(i))*(vf(i)*(-sin(btan(i)))*(1/l(i) -1/d)+0.2*cos(btan(i))*wf(i)*(-1/l(i) -1/d)+sin(alphan(i))*vl*(-1/d+1/l(i)));
+        vf(i)=-Ko*(d-l(i))*cos(btan(i))+(phi-alphan(i))*l(i)*sin(btan(i))-l(i)*wl(i)+cos(alphan(i)-btan(i));%cos(btan(i))-l(i)*sin(btan(i))*wl(i)-vl*cos(alphan(i)+btan(i));
        % wf(i)=(-(d-l(i))*sin(btan(i))-(phi-alphan(i))*l(i)*cos(btan(i))+l(i)*cos(btan(i))*wl(i)+vl*sin(-alphan(i)+btan(i)))/0.2;
-        wf(i)=((d-l(i))*0.5*(-sin(btan(i)))/0.2)+(sin(btan(i)-alphan(i)))/d+sin(btan(i))*wl(i)/l(i)-l(i)*cos(btan(i))*(phi-alphan(i))/0.2;
+        wf(i)=((d-l(i))*Ko*(-sin(btan(i)))/0.2)+(sin(btan(i)-alphan(i)))/d+sin(btan(i))*wl(i)/l(i)-l(i)*cos(btan(i))*(phi-alphan(i))/0.2;
         xl(i+1) = xl(i) + h*vl*cos(thtl(i));
         yl(i+1) = yl(i) + h*vl*sin(thtl(i));
         thtl(i+1) = thtl(i) + h*wl(i);
@@ -54,7 +56,7 @@ while t(i)<tfinal
         thtf(i+1)= thtf(i) + h*wf(i);    
         i=i+1;
         t(i)=t(i-1)+h;
-        wl(i)=1%-sin(1.1*t(i));
+        wl(i)=-sin(1.1*t(i));
        
 end
 %
